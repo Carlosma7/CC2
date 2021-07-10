@@ -1,0 +1,62 @@
+version: '3'
+services:
+  nextcloud:
+    image: "nextcloud:21.0.0-apache"
+    restart: always
+    volumes:
+      - nextcloud:/var/www/html
+    environment:
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_PASSWORD=carlos_pass
+      - MYSQL_HOST=mariadb
+      - NEXTCLOUD_ADMIN_USER=carlos_next
+      - NEXTCLOUD_ADMIN_PASSWORD=carlos_next_pass
+    container_name: servicio_nextcloud_75925767
+  nextcloud2:
+    image: "nextcloud:21.0.0-apache"
+    restart: always
+    volumes:
+      - nextcloud:/var/www/html
+    environment:
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_PASSWORD=carlos_pass
+      - MYSQL_HOST=mariadb
+      - NEXTCLOUD_ADMIN_USER=carlos2_next
+      - NEXTCLOUD_ADMIN_PASSWORD=carlos2_next_pass
+    container_name: servicio_nextcloud2_75925767
+  mariadb:
+    image: "mariadb:10.4.8-bionic"
+    command: "--transaction-isolation=READ-COMMITTED --binlog-format=ROW"
+    restart: always
+    volumes:
+      - db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=carlos_root_pass
+      - MYSQL_PASSWORD=carlos_pass
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+    container_name: servicio_mariadb_75925767
+  nginx:
+    image: nginx
+    restart: always
+    depends_on:
+      - mariadb
+      - nextcloud
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - 31019:80
+    container_name: servicio_nginx_75925767
+  openldap:
+    image: larrycai/openldap
+    restart: always
+    ports:
+      - 389:389
+    volumes:
+      - ./open_config.ldif:/files/open_config.ldif
+    container_name: servicio_openldap_75925767
+volumes:
+  nextcloud:
+  db:

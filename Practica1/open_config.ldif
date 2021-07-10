@@ -1,0 +1,16 @@
+dn: cn=carlosma7,ou=Users,dc=openstack,dc=org
+objectClass: top
+objectClass: account
+objectClass: posixAccount
+objectClass: shadowAccount
+cn: carlosma7
+uid: carlosma7
+uidNumber: 16859
+gidNumber: 100
+homeDirectory: /home/carlosma7
+loginShell: /bin/bash
+gecos: carlosma7
+userPassword: {crypt}x
+shadowLastChange: 0
+shadowMax: 0
+shadowWarning: 0
